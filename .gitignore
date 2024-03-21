@@ -51,3 +51,6 @@ project.fragment.lock.json
 
 # Environment-based exclusions
 *_env.cs
+
+# Ignore environment-specific JSON files
+appsettings*.json
