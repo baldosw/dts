@@ -39,10 +39,10 @@ public class Employee
     public string Address { get; set; }
 
     [ValidateNever]
-    public Office Office { get; set; }
+    public Department Department { get; set; }
 
     [Required]
-    public int OfficeId { get; set; }
+    public int DepartmentId { get; set; }
  
     
 }

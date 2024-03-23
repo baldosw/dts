@@ -5,24 +5,24 @@
 namespace DTS.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class AddEmployeeAndOffice : Migration
+    public partial class AddEmployeeAndDepartment : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Offices",
+                name: "Departments",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    OfficeName = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
-                    OfficeShortName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    OfficeDescription = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: true)
+                    DepartmentName = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    DepartmentShortName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    DepartmentDescription = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Offices", x => x.Id);
+                    table.PrimaryKey("PK_Departments", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -38,23 +38,23 @@ namespace DTS.DataAccess.Migrations
                     ContactNumberOne = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Address = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: false),
-                    OfficeId = table.Column<int>(type: "int", nullable: false)
+                    DepartmentId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Employees", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Employees_Offices_OfficeId",
-                        column: x => x.OfficeId,
-                        principalTable: "Offices",
+                        name: "FK_Employees_Departments_DepartmentId",
+                        column: x => x.DepartmentId,
+                        principalTable: "Departments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Employees_OfficeId",
+                name: "IX_Employees_DepartmentId",
                 table: "Employees",
-                column: "OfficeId");
+                column: "DepartmentId");
         }
 
         /// <inheritdoc />
@@ -64,7 +64,7 @@ namespace DTS.DataAccess.Migrations
                 name: "Employees");
 
             migrationBuilder.DropTable(
-                name: "Offices");
+                name: "Departments");
         }
     }
 }

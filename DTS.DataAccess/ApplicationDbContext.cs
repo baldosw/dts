@@ -14,5 +14,5 @@ public partial class ApplicationDbContext : DbContext
     }
 
     public virtual DbSet<Employee> Employees { get; set; }
-    public virtual DbSet<Office> Offices { get; set; }
+    public virtual DbSet<Department> Departments { get; set; }
 }
