@@ -10,13 +10,13 @@ public class Department
     [DisplayName(displayName:"Office Name")]
     [Required]
     [StringLength(300, MinimumLength = 2, ErrorMessage = "The {0} value cannot exceed {1} characters and should not be less than {2} characters ")]
-    public string DepartmentName { get; set; }
+    public string Name { get; set; }
 
     [DisplayName(displayName:"Office Short Name")]
     [StringLength(maximumLength: 50, ErrorMessage = "The {0} value cannot exceed {1} characters    ")]
-    public string? DepartmentShortName { get; set; }
+    public string? ShortName { get; set; }
 
     [DisplayName(displayName:"Office Description")]
     [StringLength(maximumLength: 400, ErrorMessage = "The {0} value cannot exceed {1} characters    ")]
-    public string? DepartmentDescription { get; set; }
+    public string? Description { get; set; }
 }
