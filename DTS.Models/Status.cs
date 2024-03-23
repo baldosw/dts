@@ -9,9 +9,9 @@ public class Status
     
     [Required]
     [StringLength(50, MinimumLength = 2, ErrorMessage = "The {0} value cannot exceed {1} characters and should not be less than {2} characters ")]
-    public string StatusTitle { get; set; }
+    public string Title { get; set; }
     
     [Required]
     [StringLength(500, ErrorMessage = "The {0} value cannot exceed {1} characters ")]
-    public string? StatusDescription { get; set; }
+    public string? Description { get; set; }
 }
