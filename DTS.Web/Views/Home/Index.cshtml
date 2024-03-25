@@ -1,4 +1,5 @@
-﻿@{
+﻿ 
+@{
     ViewData["Title"]= "Homepage";
     Layout = "_Layout";
 }
@@ -9,6 +10,10 @@
         <div class="row">
             <div class="col-md-12">
                 this is an example
+                @{
+                    @ViewData["trackingcode"]
+                    
+                }
             </div>
         </div>
     </div>

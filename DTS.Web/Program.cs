@@ -11,7 +11,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: "MyPolicy",  
         policy =>  
         {  
-            policy.WithOrigins("https://localhost:7086")  
+            policy.WithOrigins("https://localhost:5097")  
                 .WithMethods("POST", "PUT", "DELETE", "GET");  
         });  
 }); 

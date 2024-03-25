@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using DTS.Common;
 using Microsoft.AspNetCore.Mvc;
 using DTS.Web.Models;
 
@@ -15,6 +16,7 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
+        @ViewData["trackingcode"] = TrackingCodeGenerator.Generate();
         return View();
     }
 

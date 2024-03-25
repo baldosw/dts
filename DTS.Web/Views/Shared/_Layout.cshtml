@@ -87,7 +87,7 @@
 <li class="nav-item dropdown">
 
     <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-        <i class="bi bi-bell"></i>
+        <i class="bi bi-arrow-down-square"></i>
         <span class="badge bg-primary badge-number">4</span>
     </a><!-- End Notification Icon -->
 
@@ -164,7 +164,7 @@
 <li class="nav-item dropdown">
 
     <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-        <i class="bi bi-chat-left-text"></i>
+        <i class="bi bi-arrow-up-square"></i>
         <span class="badge bg-success badge-number">3</span>
     </a><!-- End Messages Icon -->
 
@@ -226,8 +226,142 @@
         </li>
 
     </ul><!-- End Messages Dropdown Items -->
+    
+    <li class="nav-item dropdown">
+    
+        <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-hourglass-split"></i>
+            <span class="badge bg-success badge-number">3</span>
+        </a><!-- End Messages Icon -->
+    
+        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
+            <li class="dropdown-header">
+                You have 3 new messages
+                <a href="#">
+                    <span class="badge rounded-pill bg-primary p-2 ms-2">View all</span>
+                </a>
+            </li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+    
+            <li class="message-item">
+                <a href="#">
+                    <img src="~/assets/img/messages-1.jpg" alt="" class="rounded-circle">
+                    <div>
+                        <h4>Maria Hudson</h4>
+                        <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                        <p>4 hrs. ago</p>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+    
+            <li class="message-item">
+                <a href="#">
+                    <img src="~/assets/img/messages-2.jpg" alt="" class="rounded-circle">
+                    <div>
+                        <h4>Anna Nelson</h4>
+                        <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                        <p>6 hrs. ago</p>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+    
+            <li class="message-item">
+                <a href="#">
+                    <img src="~/assets/img/messages-3.jpg" alt="" class="rounded-circle">
+                    <div>
+                        <h4>David Muldon</h4>
+                        <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                        <p>8 hrs. ago</p>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+    
+            <li class="dropdown-footer">
+                <a href="#">Show all messages</a>
+            </li>
+    
+        </ul><!-- End Messages Dropdown Items -->
+
+    </li><!-- End Messages Nav -->
+<li class="nav-item dropdown">
+    
+        <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-check-square"></i>
+            <span class="badge bg-success badge-number">3</span>
+        </a><!-- End Messages Icon -->
+    
+        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
+            <li class="dropdown-header">
+                You have 3 new messages
+                <a href="#">
+                    <span class="badge rounded-pill bg-primary p-2 ms-2">View all</span>
+                </a>
+            </li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+    
+            <li class="message-item">
+                <a href="#">
+                    <img src="~/assets/img/messages-1.jpg" alt="" class="rounded-circle">
+                    <div>
+                        <h4>Maria Hudson</h4>
+                        <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                        <p>4 hrs. ago</p>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+    
+            <li class="message-item">
+                <a href="#">
+                    <img src="~/assets/img/messages-2.jpg" alt="" class="rounded-circle">
+                    <div>
+                        <h4>Anna Nelson</h4>
+                        <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                        <p>6 hrs. ago</p>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+    
+            <li class="message-item">
+                <a href="#">
+                    <img src="~/assets/img/messages-3.jpg" alt="" class="rounded-circle">
+                    <div>
+                        <h4>David Muldon</h4>
+                        <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                        <p>8 hrs. ago</p>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+    
+            <li class="dropdown-footer">
+                <a href="#">Show all messages</a>
+            </li>
+    
+        </ul><!-- End Messages Dropdown Items -->
 
 </li><!-- End Messages Nav -->
+
 
 <li class="nav-item dropdown pe-3">
 
@@ -294,16 +428,27 @@
 <aside id="sidebar" class="sidebar">
 
     <ul class="sidebar-nav" id="sidebar-nav">
-
         <li class="nav-item">
-            <a class="nav-link " asp-controller="Home"   asp-action="Index">
-                <i class="bi bi-grid"></i>
-                <span>Dashboard</span>
+            <a class="nav-link collapsed" data-bs-target="#documentsmanage-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-folder"></i><span>Manage Documents</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-        </li><!-- End Dashboard Nav -->
+            <ul id="documentsmanage-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a asp-controller="Home"   asp-action="Index">
+                        <i class="bi bi-circle"></i><span>Documents</span>
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Home"   asp-action="Index">
+                        <i class="bi bi-circle"></i><span>Create Document</span>
+                    </a>
+                </li>
+            </ul>
+        </li><!-- End Components Nav -->
+        
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#students-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-person"></i><span>Manage Documents</span><i class="bi bi-chevron-down ms-auto"></i>
+                <i class="bi bi-journal-check"></i><span>Documents Status</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="students-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
@@ -328,7 +473,37 @@
                 </li>
             </ul>
         </li><!-- End Components Nav -->
-           
+         <li class="nav-item">
+                 <a class="nav-link collapsed" data-bs-target="#personalinfo-nav" data-bs-toggle="collapse" href="#">
+                     <i class="bi bi-person"></i><span>Personal Information</span><i class="bi bi-chevron-down ms-auto"></i>
+                 </a>
+                 <ul id="personalinfo-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                     <li>
+                         <a asp-controller="Home"   asp-action="Index">
+                             <i class="bi bi-circle"></i><span>Edit Personal Information</span>
+                         </a>
+                     </li>
+                 </ul>
+         </li><!-- End Components Nav -->
+        <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#accountsettings-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-file-earmark-lock"></i><span>Account Settings</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="accountsettings-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a asp-controller="Home"   asp-action="Index">
+                            <i class="bi bi-circle"></i><span>Edit Account Settings</span>
+                        </a>
+                    </li>
+                </ul>
+        </li><!-- End Components Nav -->
+         <li class="nav-item">
+                     <a class="nav-link " asp-controller="Home"   asp-action="Index">
+                         <i class="bi bi-box-arrow-in-left
+     "></i>
+                     <span>Logout</span>
+         </a>
+         </li><!-- End Dashboard Nav -->
         
     </ul>
 
