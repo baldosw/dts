@@ -25,4 +25,20 @@
       <ProjectReference Include="..\DTS.DataAccess\DTS.DataAccess.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\Areas\User\Views\Document\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Areas\User\Views\Shared\Error.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Areas\User\Views\Shared\_Layout.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Areas\User\Views\Shared\_Notification.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Areas\User\Views\Shared\_ValidationScriptsPartial.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Document\Index.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="Areas\User\Views\Document\Index.cshtml" />
+      <AdditionalFiles Include="Areas\User\Views\Shared\_Layout.cshtml" />
+      <AdditionalFiles Include="Areas\User\Views\Shared\_Notification.cshtml" />
+      <AdditionalFiles Include="Areas\User\Views\Shared\_ValidationScriptsPartial.cshtml" />
+    </ItemGroup>
+
 </Project>
