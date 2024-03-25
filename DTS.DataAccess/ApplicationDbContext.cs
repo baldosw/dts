@@ -16,5 +16,7 @@ public partial class ApplicationDbContext : DbContext
     public virtual DbSet<Employee> Employees { get; set; }
     public virtual DbSet<Department> Departments { get; set; }
     public virtual DbSet<Status> Statuses { get; set; }
+    public virtual DbSet<Document> Documents { get; set; }
+    public virtual DbSet<RequestType> RequestTypes { get; set; }
   
 }

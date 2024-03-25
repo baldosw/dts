@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DTS.Common;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DTS.Web.Controllers;
 
 public class DocumentController : Controller
 {
-    // GET
+     
     public IActionResult Index()
     {
         return View();
@@ -12,6 +13,7 @@ public class DocumentController : Controller
     
     public IActionResult Create()
     {
+        @ViewData["TrackingCode"] = TrackingCodeGenerator.Generate();
         return View();
     }
     
