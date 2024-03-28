@@ -50,3 +50,28 @@ body {
 .delIconStatusDate:hover{
   cursor: pointer;
 }
+
+/* Lower font size for all text inside the DataTable */
+.dataTables_wrapper .dataTables_filter input,
+.dataTables_wrapper .dataTables_length select,
+.dataTables_wrapper .dataTables_paginate .paginate_button,
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_processing,
+.dataTables_wrapper .dataTables_empty,
+.dataTables_wrapper .dataTables_scrollHead,
+.dataTables_wrapper .dataTables_scrollHeadInner,
+.dataTables_wrapper .dataTables_scrollBody,
+.dataTables_wrapper .dataTables_scrollFoot,
+.dataTables_wrapper .dataTables_scrollFootInner {
+  font-size: 12px; /* Adjust the font size as needed */
+}
+
+/* Lower font size for table headers */
+.dataTables_wrapper table.dataTable thead th {
+  font-size: 12px; /* Adjust the font size as needed */
+}
+
+/* Lower font size for table body cells */
+.dataTables_wrapper table.dataTable tbody td {
+  font-size: 12px; /* Adjust the font size as needed */
+}

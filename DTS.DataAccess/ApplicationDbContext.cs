@@ -18,5 +18,4 @@ public partial class ApplicationDbContext : DbContext
     public virtual DbSet<Status> Statuses { get; set; }
     public virtual DbSet<Document> Documents { get; set; }
     public virtual DbSet<RequestType> RequestTypes { get; set; }
-  
 }

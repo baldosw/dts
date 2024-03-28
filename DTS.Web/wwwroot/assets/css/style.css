@@ -1412,3 +1412,106 @@ div.dataTables_wrapper div.dataTables_filter {
    opacity: .3;
    transition: .3s;
 }
+
+
+/* Lower font size for all text inside the DataTable */
+.dataTables_wrapper .dataTables_filter input,
+.dataTables_wrapper .dataTables_length select,
+.dataTables_wrapper .dataTables_paginate .paginate_button,
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_processing,
+.dataTables_wrapper .dataTables_empty,
+.dataTables_wrapper .dataTables_scrollHead,
+.dataTables_wrapper .dataTables_scrollHeadInner,
+.dataTables_wrapper .dataTables_scrollBody,
+.dataTables_wrapper .dataTables_scrollFoot,
+.dataTables_wrapper .dataTables_scrollFootInner {
+  font-size: 12px !important; /* Adjust the font size as needed */
+}
+
+/* Lower font size for table headers */
+.dataTables_wrapper table.dataTable thead th {
+  font-size: 12px !important; /* Adjust the font size as needed */
+}
+
+/* Lower font size for table body cells */
+.dataTables_wrapper table.dataTable tbody td {
+  font-size: 12px !important; /* Adjust the font size as needed */
+}
+
+/* Lower font size for search input */
+.dataTables_wrapper .dataTables_filter input {
+  font-size: 12px !important; /* Adjust the font size as needed */
+}
+
+/* Lower font size for length select */
+.dataTables_wrapper .dataTables_length select {
+  font-size: 12px !important; /* Adjust the font size as needed */
+}
+
+/* Lower font size for pagination buttons (previous and next) */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  font-size: 12px !important; /* Adjust the font size as needed */
+}
+
+/* Lower font size for table info text */
+.dataTables_wrapper .dataTables_info {
+  font-size: 12px !important; /* Adjust the font size as needed */
+}
+
+/* Lower font size for search label */
+.dataTables_wrapper .dataTables_filter label {
+  font-size: 12px !important; /* Adjust the font size as needed */
+}
+ 
+/* Lower font size for paging buttons (previous, next) */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  font-size: 12px !important; /* Adjust the font size as needed */
+}
+
+/* Lower font size for page numbers */
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+  font-size: 12px !important; /* Adjust the font size as needed */
+}
+
+.pagination .paginate_button, .pagination .page-link{
+  font-size: 12px !important; /* Adjust the font size as needed */
+}
+
+#dataTable_wrapper > div.flexcontent > button.btn.btn-secondary.buttons-print.btn-app.export.imprimir.btn-dark > i,
+#dataTable_wrapper > div.flexcontent > button.btn.btn-secondary.buttons-csv.buttons-html5.btn-app.export.csv.btn-info > i,
+#dataTable_wrapper > div.flexcontent > button.btn.btn-secondary.buttons-excel.buttons-html5.btn-app.export.excel.btn-success > i
+{
+  font-size: 14px;
+}
+
+#dataTable_wrapper > div.flexcontent > button.btn.btn-secondary.buttons-collection.dropdown-toggle.buttons-page-length.selectTable{
+  font-size: 12px;
+}
+
+
+.dataTables_filter {
+  width: auto !important;
+}
+ 
+.custom-buttons {
+  float: right;
+  margin-left: 10px;
+ 
+}
+
+.custom-buttons button{
+  font-size: 12px !important;
+}
+
+.modal > *, .modal button, .modal .modal-title, .modal input, .modal textarea{
+  font-size: 12px !important;
+}
+ 
+.modal .modal-title{
+  font-weight: 600;
+}
+
+textarea{
+  height: 200px;
+}
