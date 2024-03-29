@@ -27,16 +27,19 @@ public class Document
     
     [Display(Name = "Modified By")]
     public int ModifiedBy { get; set; }
-
-    [ValidateNever]
-    public Employee Employee { get; set; }
-
-    [Required]
-    public int RequestId { get; set; }
-
+ 
     [ValidateNever]
     public RequestType RequestType { get; set; }
 
+    public int RequestTypeId { get; set; }
+
+    public string Remarks { get; set; }
+
+    [ValidateNever]
+    public Department? Department { get; set; }
+    
+    public int? DepartmentId { get; set; }
+     
     public DateTime CreatedDate { get; set; }
 
     public DateTime ModifiedDate { get; set; }

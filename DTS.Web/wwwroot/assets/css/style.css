@@ -1493,12 +1493,8 @@ div.dataTables_wrapper div.dataTables_filter {
 .dataTables_filter {
   width: auto !important;
 }
- 
-.custom-buttons {
-  float: right;
-  margin-left: 10px;
- 
-}
+
+
 
 .custom-buttons button{
   font-size: 12px !important;
@@ -1513,5 +1509,23 @@ div.dataTables_wrapper div.dataTables_filter {
 }
 
 textarea{
-  height: 200px;
+  font-size: 10px !important;
+  height: 200px !important;
 }
+
+.form-select, .form-select option {
+  font-size: 10px !important;
+ 
+}
+ 
+.dataTables_wrapper  {
+  position: relative;
+}
+
+.dataTables_wrapper .custom-buttons {
+   position: absolute;
+  right: 0;
+  top: 70px;
+}
+
+  

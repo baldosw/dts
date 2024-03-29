@@ -4,6 +4,7 @@ using DTS.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DTS.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240329122839_AddDepartmentOnDocument")]
+    partial class AddDepartmentOnDocument
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,6 +73,9 @@ namespace DTS.DataAccess.Migrations
                     b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
 
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
                     b.Property<int>("ModifiedBy")
                         .HasColumnType("int");
 
@@ -96,6 +102,8 @@ namespace DTS.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
+
+                    b.HasIndex("EmployeeId");
 
                     b.HasIndex("RequestTypeId");
 
@@ -205,6 +213,12 @@ namespace DTS.DataAccess.Migrations
                         .WithMany()
                         .HasForeignKey("DepartmentId");
 
+                    b.HasOne("DTS.Models.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("DTS.Models.RequestType", "RequestType")
                         .WithMany()
                         .HasForeignKey("RequestTypeId")
@@ -212,6 +226,8 @@ namespace DTS.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("Department");
+
+                    b.Navigation("Employee");
 
                     b.Navigation("RequestType");
                 });

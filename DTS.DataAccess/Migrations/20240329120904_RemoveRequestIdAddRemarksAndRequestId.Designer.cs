@@ -4,6 +4,7 @@ using DTS.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DTS.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240329120904_RemoveRequestIdAddRemarksAndRequestId")]
+    partial class RemoveRequestIdAddRemarksAndRequestId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -67,7 +70,7 @@ namespace DTS.DataAccess.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("DepartmentId")
+                    b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
                     b.Property<int>("ModifiedBy")
@@ -95,7 +98,7 @@ namespace DTS.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DepartmentId");
+                    b.HasIndex("EmployeeId");
 
                     b.HasIndex("RequestTypeId");
 
@@ -201,9 +204,11 @@ namespace DTS.DataAccess.Migrations
 
             modelBuilder.Entity("DTS.Models.Document", b =>
                 {
-                    b.HasOne("DTS.Models.Department", "Department")
+                    b.HasOne("DTS.Models.Employee", "Employee")
                         .WithMany()
-                        .HasForeignKey("DepartmentId");
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DTS.Models.RequestType", "RequestType")
                         .WithMany()
@@ -211,7 +216,7 @@ namespace DTS.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Department");
+                    b.Navigation("Employee");
 
                     b.Navigation("RequestType");
                 });

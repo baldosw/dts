@@ -2,11 +2,11 @@ var tableTitle = document.getElementById("tableTitle");
 
 var dataTable;
 
-tinymce.init({
-    selector: 'textarea',
-    plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-});
+// tinymce.init({
+//     selector: 'textarea',
+//     plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+//     toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+// });
 
 var idioma =
 {
@@ -46,7 +46,23 @@ var idioma =
         }
     }
 };
+ 
+function generateTrackingCode(length = 12) {
+    const alphabetChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const numericChars = "0123456789";
+    let trackingCode = "";
 
+    for (let i = 0; i < length; i++) {
+        if (i < 6) {
+            trackingCode += alphabetChars.charAt(Math.floor(Math.random() * alphabetChars.length));
+        } else {
+            trackingCode += numericChars.charAt(Math.floor(Math.random() * numericChars.length));
+        }
+    }
+
+    return trackingCode.toUpperCase();
+}
+  
 function converDate(strDate) {
     var date = new Date(strDate);
 
@@ -558,5 +574,4 @@ function loadSelectionTable(ajaxColumns) {
     return dataTable;
 }
 
-
-
+ 
