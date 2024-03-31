@@ -47,21 +47,22 @@ var idioma =
     }
 };
 
-// Define the function with a callback parameter
+function convertDateTimeToTimeStamp(dateTime){
+    let newDateTime = new Date(dateTime);
+    return newDateTime.getTime() / 1000;  
+}
+
+ 
 function checkIfPropertyExistsThenGetValue(arrayObj, propertyName, callback) {
     arrayObj.forEach(function(obj) {
         if (obj.hasOwnProperty(propertyName)) {
-
-            // Call the callback function with the value if the property exists
             callback(obj[propertyName]);
             return;
         }
     });
-
-    // Call the callback function with null if the property doesn't exist
+ 
     callback(null);
 }
-
 function validateInput(field, value, minimumLength, maximumLength) {
  
     if (!value) {
@@ -219,7 +220,36 @@ function OnClickDelete(url, entity, returlUrl = "") {
     })
 }
 
-// Load Student Profile From Student Table
+function loadDocumentFromDatabase(urlFromClient){
+    $(document).ready(function() {
+        $.ajax({
+            url: urlFromClient,
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                if (response && response.data && response.data.title) {
+                    // Populate the input box within the modal with the title
+                    console.log(response.data)
+                    $('#updateTitle').val(response.data.title);
+                    $('#updateContent').val(response.data.content);
+                    $('#updateRemarks').val(response.data.remarks);
+                    $('#updateDepartmentId').val(response.data.departmentId);
+                    $('#updateRequestTypeId').val(response.data.requestTypeId);
+                    $('#updateTrackingCode').text(response.data.trackingCode)
+                    
+                    $('#modalUpdateDocument').modal('show');
+                } else {
+                    console.error('Title not found in the response.');
+                }
+            },
+            error: function(xhr, status, error) {
+
+                console.error(xhr.responseText);
+            }
+        });
+    });
+}
+ 
 function OnClickLoadStudentProfile(url, entity) {
     $.ajax({
         url: url,
@@ -385,20 +415,23 @@ var documentColumns = {
     },
     col: [
         { data: 'id' },
+        {data: 'department'},
         { data: 'trackingCode' },
         { data: 'title' },         
-        { data: 'content' },         
+        { data: 'content', className: 'truncate'  },
+        {data: 'requestType'},
+        {data: 'remarks'},
+        {data:'createdTimestamp', visible: false},
         {
             data: 'id',
             "render": function (data) {
                 return `
                         <div class="d-flex justify-content-center">
-                            <a class="btn btn-info btn-hover text-end text-white d-block d-flex justify-content-center align-items-center dropdown-toggle pl-2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 30px; height: 30px">                        
-                        
+                            <a class="btn btn-info btn-hover text-end text-white d-block d-flex justify-content-center align-items-center dropdown-toggle pl-2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 30px; height: 30px">                                                
                             </a>
                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"   >
-                                <a class="dropdown-item" href="#" style = "font-size: 12px !important;">
-                                <i class="bi bi-pencil-square"></i>
+                                <a class="dropdown-item" href="#" onclick='loadDocumentFromDatabase("/user/document/getdocument/${data}")' style = "font-size: 12px !important;"   id = "btnUpdateDocumentModal" >
+                                <i class="bi bi-pencil-square" ></i>
                                 Update</a>
                                 <a class="dropdown-item" href="#" style = "font-size: 12px !important;">
                                    <i class="bi bi-printer"></i>
@@ -421,13 +454,10 @@ var documentColumns = {
     'select': {
         'style': 'multi'
     },
-    'order': [[1, 'asc']]
+    'order': [[1, 'desc']]
 }
-
-
-
+ 
  function loadDataTable(ajaxColumns) {
-    
     dataTable = $('#dataTable').DataTable({
         "paging": true,
         "lengthChange": true,
@@ -488,13 +518,10 @@ var documentColumns = {
                     className: 'selectTable'
                 }
             ]
-
-
         },
         "createdRow": function(row, data, index) {
             $(row).find('.paginate_button').css('font-size', '12px'); // Adjust font size
         }
-
     });
 
 
@@ -636,4 +663,4 @@ function loadSelectionTable(ajaxColumns) {
     return dataTable;
 }
 
- 
+

@@ -42,5 +42,9 @@ public class DocumentVm
     public int CreatedById { get; set; }
 
     public DateTime CreatedDate { get; set; }
+
+    public long CreatedTimestamp { get; set; }
+
+    public int DocumentId { get; set; }
  
 }

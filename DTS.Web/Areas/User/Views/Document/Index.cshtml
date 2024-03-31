@@ -12,20 +12,24 @@
                     <thead>
                     <tr class="bg-dark text-white ps-2">
                     <th class="ps-3">Id</th>
+                    <th class="ps-3">Department</th>
                     <th class="ps-3">TrackingCode</th>
                     <th class="ps-3">Title</th>
                     <th class="ps-3">Content</th>
+                    <th class="ps-3">Request Type</th>
+                    <th class="ps-3">Remarks</th>
+                    <th class="ps-3">CreatedDate</th>
                     <th class="ps-3">Action</th>
                     </thead>
                 </table>
             </div>
         </div>
         <div class="custom-buttons">
-            <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id = "btnNewDocument">
+            <button class="btn btn-primary" data-toggle="modal" data-target="#modalNewDocument" id = "btnNewDocument">
                 <i class="bi bi-file-earmark-plus"></i>
                 New Document
             </button>
-            <button class="btn btn-success">
+            <button class="btn btn-success" id = "btnRefreshDataTable">
                 <i class="bi bi-arrow-repeat"></i>
                 Refresh
             </button>
@@ -34,11 +38,63 @@
 </div>
 
 <!-- Modal for new documents -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+<div class="modal fade" id="modalNewDocument" tabindex="-1" role="dialog" aria-labelledby="modalNewDocumentLabel" aria-hidden="true" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalNewDocumentLabel">New Document</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <label for="message-text" class="col-form-label">Tracking Code:</label>
+                    <strong id = 'trackingCode'></strong>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Department:</label>
+                        <select id="departmentId" asp-for="@Model.DepartmentId" asp-items="@Model.Departments" class="form-select" style="font-size: 12px !important;">
+                            <option value="">----Select Department----</option>
+                        </select>
+                        <p class="errorFieldText" id = 'errorFieldDepartmentId' data-errorfield = "departmentId"></p>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Title:</label>
+                        <input type="text" class="form-control" id="title" >
+                        <p class="errorFieldText" id = 'errorFieldTitle' data-errorfield = "title"></p>
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Content:</label>
+                        <textarea cols="30" rows="2" class="form-control" style="height: 50px;" id = "content"  ></textarea>
+                        <p class="errorFieldText" id = 'errorFieldContent' data-errorfield = "content"></p>
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Request Type:</label>
+                        <select asp-for="@Model.RequestTypeId" asp-items="@Model.RequestTypes" class="form-select" style="font-size: 12px !important;" id="requestTypeId" >
+                            <option value="">----Select Request Type----</option>
+                        </select>
+                        <p class="errorFieldText" id = 'errorFieldRequestTypeId' data-errorfield = "requestTypeId"></p>
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Remarks:</label>
+                        <textarea cols="30" rows="2" class="form-control" style="height: 50px;" id ="remarks"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id = "closeModal">Close</button>
+                <button type="button" class="btn btn-primary" id = 'btnSaveChangesDocument'>Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for update documents -->
+<div class="modal fade" id="modalUpdateDocument" tabindex="-1" role="dialog" aria-labelledby="modalUpdateDocumentLabel" aria-hidden="true" >
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">New Document</h5>
+        <h5 class="modal-title" id="modalUpdateDocumentLabel">Update Document</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -46,34 +102,34 @@
       <div class="modal-body">
           <form>
               <label for="message-text" class="col-form-label">Tracking Code:</label>
-              <strong id = 'trackingCode'></strong>
+              <strong id = 'updateTrackingCode'></strong>
               <div class="form-group">
                   <label for="message-text" class="col-form-label">Department:</label>
-                  <select id="departmentId" asp-for="@Model.DepartmentId" asp-items="@Model.Departments" class="form-select" style="font-size: 12px !important;">
+                  <select id="updateDepartmentId" asp-for="@Model.DepartmentId" asp-items="@Model.Departments" class="form-select" style="font-size: 12px !important;">
                       <option value="">----Select Department----</option>
                   </select>
                   <p class="errorFieldText" id = 'errorFieldDepartmentId' data-errorfield = "departmentId"></p>
               </div>
               <div class="form-group">
                   <label for="recipient-name" class="col-form-label">Title:</label>
-                  <input type="text" class="form-control" id="title" >
+                  <input type="text" class="form-control" id="updateTitle"   >
                   <p class="errorFieldText" id = 'errorFieldTitle' data-errorfield = "title"></p>
               </div>
               <div class="form-group">
                   <label for="message-text" class="col-form-label">Content:</label>
-                  <textarea cols="30" rows="2" class="form-control" style="height: 50px;" id = "content"  ></textarea>
+                  <textarea cols="30" rows="2" class="form-control" style="height: 50px;" id = "updateContent"  ></textarea>
                    <p class="errorFieldText" id = 'errorFieldContent' data-errorfield = "content"></p>
               </div>
               <div class="form-group">
                   <label for="message-text" class="col-form-label">Request Type:</label>
-                  <select asp-for="@Model.RequestTypeId" asp-items="@Model.RequestTypes" class="form-select" style="font-size: 12px !important;" id="requestTypeId" >
+                  <select asp-for="@Model.RequestTypeId" asp-items="@Model.RequestTypes" class="form-select" style="font-size: 12px !important;" id="updateRequestTypeId" >
                       <option value="">----Select Request Type----</option>
                   </select>
                     <p class="errorFieldText" id = 'errorFieldRequestTypeId' data-errorfield = "requestTypeId"></p>
               </div>
               <div class="form-group">
                   <label for="message-text" class="col-form-label">Remarks:</label>
-                  <textarea cols="30" rows="2" class="form-control" style="height: 50px;" id ="remarks"></textarea>
+                  <textarea cols="30" rows="2" class="form-control" style="height: 50px;" id ="updateRemarks"></textarea>
               </div>
           </form>
       </div>
@@ -88,10 +144,11 @@
 @section Scripts
 {
     <script type="text/javascript">
-        loadDataTable(documentColumns)
+         
         let errors = []
-        let trackingCode = "";
-          
+        let trackingCode = "";                  
+        loadDataTable(documentColumns)
+        
          $('#btnNewDocument').click(function() {                
               trackingCode = generateTrackingCode();
               $('#trackingCode').text(trackingCode);      
@@ -102,6 +159,12 @@
        
         $(document).ready(function() {   
             
+         function refreshDatatable(){
+             dataTable.destroy();
+             loadDataTable(documentColumns)
+             dataTable.ajax.reload();
+         }
+         
         function displayValidationError(errorField, errorMessage){     
             if (validateValueIfNullOrUndefined(errorMessage)){
               $(errorField).text(errorMessage)
@@ -118,7 +181,7 @@
             });         
             callback(null);
         }
- 
+          
         $('#btnSaveChangesDocument').on('click', function (e){                   
             let departmentId = parseInt($('#departmentId').val());
              let requestTypeId = parseInt($('#requestTypeId').val());
@@ -160,7 +223,8 @@
                          $('#requestTypeId').prop('selectedIndex', 0);
                          
                          $('#closeModal').click();
-                         console.log('response', response)
+                          
+                         refreshDatatable();
                           
                          pushNotify('New Document', 'Successfully created document', 'success');                               
                       },

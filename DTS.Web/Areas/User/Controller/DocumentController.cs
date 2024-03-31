@@ -54,12 +54,59 @@ public class DocumentController : Controller
     [HttpGet]
     public async Task<IActionResult>  GetDocuments()
     {
-        var documents = await _dbContext.Documents.AsNoTracking().ToListAsync();
+        var documents = await (from document in _dbContext.Documents
+            join department in _dbContext.Departments.AsNoTracking()
+                on document.DepartmentId equals department.Id
+            join requestType in _dbContext.RequestTypes.AsNoTracking()
+                on document.RequestTypeId equals requestType.Id
+            orderby document.Id descending 
+            select new DocumentVm
+            {
+                Id = document.Id,
+                Title = document.Title,
+                Content = document.Content,
+                TrackingCode = document.TrackingCode,
+                Remarks = document.Remarks,
+                RequestType = requestType.Title,
+                Department = department.Name,
+                DocumentId = document.Id,
+                RequestTypeId = document.DepartmentId,
+                DepartmentId = document.DepartmentId,
+                CreatedTimestamp = (long)(document.CreatedDate - new DateTime(1970, 1, 1)).TotalSeconds
+            }).ToListAsync();
+        
         var dataJson = new { data = documents };
 
         return Ok(dataJson);
     }
-
+    
+    public async Task<IActionResult>  GetDocument(int id)
+    {
+        var documentFromDb = await (from document in _dbContext.Documents
+            join department in _dbContext.Departments.AsNoTracking()
+                on document.DepartmentId equals department.Id
+            join requestType in _dbContext.RequestTypes.AsNoTracking()
+                on document.RequestTypeId equals requestType.Id
+            orderby document.Id descending 
+            where document.Id == id
+            select new DocumentVm
+            {
+                Id = document.Id,
+                Title = document.Title,
+                Content = document.Content,
+                TrackingCode = document.TrackingCode,
+                Remarks = document.Remarks,
+                RequestType = requestType.Title,
+                Department = department.Name,
+                RequestTypeId = requestType.Id,
+                DepartmentId = department.Id,
+                CreatedTimestamp = (long)(document.CreatedDate - new DateTime(1970, 1, 1)).TotalSeconds
+            }).SingleOrDefaultAsync();
+        
+        var dataJson = new { data = documentFromDb };
+        return Ok(dataJson);
+    }
+ 
     [HttpPost]
     public async Task<IActionResult>  CreateDocument([FromBody]DocumentVm documentVm)
     {
