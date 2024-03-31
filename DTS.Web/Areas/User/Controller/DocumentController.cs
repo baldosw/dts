@@ -61,24 +61,45 @@ public class DocumentController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult>  CreateDocument(DocumentVm documentVm)
+    public async Task<IActionResult>  CreateDocument([FromBody]DocumentVm documentVm)
     {
         Document document = new Document();
-        document.Title = documentVm.Title;
-        document.Content = documentVm.Content;
-        document.TrackingCode = documentVm.TrackingCode;
-        document.DepartmentId = documentVm.DepartmentId;
-        document.RequestTypeId = documentVm.RequestTypeId;
-        document.Remarks = documentVm.Remarks;
-        document.CreatedBy = 3;
-        document.ModifiedBy = 3;
         document.CreatedDate = DateTime.Now;
         document.ModifiedDate = DateTime.Now;
+        document.CreatedBy = 3;
+        document.ModifiedBy = 3;
+        
+        if (ModelState.IsValid)
+        {
+            document.Title = documentVm.Title;
+            document.Content = documentVm.Content;
+            document.TrackingCode = documentVm.TrackingCode;
+            document.DepartmentId = documentVm.DepartmentId;
+            document.RequestTypeId = documentVm.RequestTypeId;
+            document.Remarks = documentVm.Remarks;
+            
+            await _dbContext.Documents.AddAsync(document);
+            await _dbContext.SaveChangesAsync();
 
-        await _dbContext.Documents.AddAsync(document);
-        await _dbContext.SaveChangesAsync();
-         
-        return Ok();
+            var dataJson = new { isSuccess = true };
+            
+            return Ok(dataJson);
+        }
+        else
+        {
+            var errors = ModelState.Keys
+                .Select(key => new
+                {
+                    Field = key,
+                    Error = ModelState[key].Errors.FirstOrDefault()?.ErrorMessage
+                })
+                .Where(item => item.Error != null)
+                .ToList();
+            
+            var dataJson = new { isSuccess = false, errors = errors };
+            return BadRequest(dataJson);
+        }
+ 
     }
 
     

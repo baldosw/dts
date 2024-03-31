@@ -33,7 +33,7 @@ public class Document
 
     public int RequestTypeId { get; set; }
 
-    public string Remarks { get; set; }
+    public string? Remarks { get; set; }
 
     [ValidateNever]
     public Department? Department { get; set; }

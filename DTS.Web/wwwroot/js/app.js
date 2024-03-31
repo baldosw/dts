@@ -46,7 +46,54 @@ var idioma =
         }
     }
 };
+
+function validateInput(field, value, minimumLength, maximumLength) {
  
+    if (!value) {
+        return `${field} is required.`;
+    }
+
+    if (value.length < minimumLength || value.length > maximumLength) {
+        return `${field} value cannot exceed ${maximumLength} characters and should not be less than ${minimumLength} characters.`;
+    }
+    
+    return null;
+}
+
+function validateSelect(field, value) {
+    if (!value) {
+        return `${field} is required.`;
+    }
+    return null;
+}
+
+function validateValueIfNullOrUndefined(value) {
+    if (value === null || value === undefined) {
+        return false;  
+    } else {
+        return true;  
+    }
+}
+ 
+function pushNotify(changesTitle, changesText, changesStatus) {
+    new Notify({
+        status:  changesStatus,
+        title: changesTitle,
+        text: changesText,
+        effect: 'fade',
+        speed: 300,
+        customClass: null,
+        customIcon: null,
+        showIcon: true,
+        showCloseButton: true,
+        autoclose: true,
+        autotimeout: 3000,
+        gap: 20,
+        distance: 20,
+        type: 'outline',
+        position: 'right top'
+    })
+}
 function generateTrackingCode(length = 12) {
     const alphabetChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const numericChars = "0123456789";
@@ -334,7 +381,7 @@ var documentColumns = {
                             <a class="btn btn-info btn-hover text-end text-white d-block d-flex justify-content-center align-items-center dropdown-toggle pl-2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 30px; height: 30px">                        
                         
                             </a>
-                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" >
+                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"   >
                                 <a class="dropdown-item" href="#" style = "font-size: 12px !important;">
                                 <i class="bi bi-pencil-square"></i>
                                 Update</a>
