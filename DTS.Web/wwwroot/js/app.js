@@ -47,6 +47,21 @@ var idioma =
     }
 };
 
+// Define the function with a callback parameter
+function checkIfPropertyExistsThenGetValue(arrayObj, propertyName, callback) {
+    arrayObj.forEach(function(obj) {
+        if (obj.hasOwnProperty(propertyName)) {
+
+            // Call the callback function with the value if the property exists
+            callback(obj[propertyName]);
+            return;
+        }
+    });
+
+    // Call the callback function with null if the property doesn't exist
+    callback(null);
+}
+
 function validateInput(field, value, minimumLength, maximumLength) {
  
     if (!value) {

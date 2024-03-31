@@ -108,66 +108,117 @@
               errors.push(errorMessage)
             }          
         }
-            
-        $('#btnSaveChangesDocument').on('click', function (e){                   
-                let departmentId = parseInt($('#departmentId').val());
-                 let requestTypeId = parseInt($('#requestTypeId').val());
-                 let title =  $('#title').val();
-                 let content =  $('#content').val();
-                 let remarks =  $('#remarks').val();
-                  
-                 let validateTitle = validateInput('Title', title, 2, 50);
-                 let validateContent = validateInput('Content', content, 2, 400);
-                 let validateDepartment = validateSelect('Department', departmentId);
-                 let validateRequestTypeid = validateSelect('Request Type', requestTypeId);
-                 
-                 $('.errorFieldText').text('')
-                 
-                 displayValidationError('#errorFieldTitle', validateTitle)
-                 displayValidationError('#errorFieldContent', validateContent)
-                 displayValidationError('#errorFieldDepartmentId', validateDepartment)
-                 displayValidationError('#errorFieldRequestTypeId', validateRequestTypeid)
-                 console.log(errors)
-                   
-                 if (errors.length < 1){
-                     console.log('insert data')
-                     $.ajax({
-                          url: '/user/document/createDocument',
-                          type: 'POST',
-                          contentType: 'application/json', 
-                          data: JSON.stringify({
-                              departmentId,
-                              requestTypeId,
-                              title,
-                              content,
-                              remarks,
-                              trackingCode
-                          }),
-                          success: function(response) {                                  
-                             $('#title').val('');
-                             $('#content').val('');
-                             $('#remarks').val('');
-                             $('#departmentId').prop('selectedIndex', 0);
-                             $('#requestTypeId').prop('selectedIndex', 0);
-                             
-                             $('#closeModal').click();
-                             console.log('response', response)
-                              
-                             pushNotify('New Document', 'Successfully created document', 'success');                               
-                          },
-                          error: function(xhr, status, error) {      
-                              console.log('ERROR', xhr)
-                              pushNotify('New Document', 'Failed to create document', 'error');
-                              
-                          }
-                      });
-                 }else{
-                     
-                 }                  
-                 errors = [];
-            });        
         
-        });
+        function checkIfPropertyExistsThenGetValue(arrayObj, propertyName, callback) {
+            arrayObj.forEach(function(obj) {
+                if (obj.hasOwnProperty(propertyName)) {                       
+                    callback(obj[propertyName]);
+                    return;
+                }
+            });         
+            callback(null);
+        }
+ 
+        $('#btnSaveChangesDocument').on('click', function (e){                   
+            let departmentId = parseInt($('#departmentId').val());
+             let requestTypeId = parseInt($('#requestTypeId').val());
+             let title =  $('#title').val();
+             let content =  $('#content').val();
+             let remarks =  $('#remarks').val();
+              
+             let validateTitle = validateInput('Title', title, 2, 50);
+             let validateContent = validateInput('Content', content, 2, 400);
+             let validateDepartment = validateSelect('Department', departmentId);
+             let validateRequestTypeid = validateSelect('Request Type', requestTypeId);
+             
+             $('.errorFieldText').text('')
+             
+             displayValidationError('#errorFieldTitle', validateTitle)
+             displayValidationError('#errorFieldContent', validateContent)
+             displayValidationError('#errorFieldDepartmentId', validateDepartment)
+             displayValidationError('#errorFieldRequestTypeId', validateRequestTypeid)
+              
+             if (errors.length < 1){
+                 console.log('insert data')
+                 $.ajax({
+                      url: '/user/document/createDocument',
+                      type: 'POST',
+                      contentType: 'application/json', 
+                      data: JSON.stringify({
+                          departmentId,
+                          requestTypeId,
+                          title,
+                          content,
+                          remarks,
+                          trackingCode
+                      }),
+                      success: function(response) {                                  
+                         $('#title').val('');
+                         $('#content').val('');
+                         $('#remarks').val('');
+                         $('#departmentId').prop('selectedIndex', 0);
+                         $('#requestTypeId').prop('selectedIndex', 0);
+                         
+                         $('#closeModal').click();
+                         console.log('response', response)
+                          
+                         pushNotify('New Document', 'Successfully created document', 'success');                               
+                      },
+                      error: function(xhr, status, error) {                           
+                      let serverErrors = xhr.responseJSON.errors;
+                      let transformedObjects = [];
+                       
+                       serverErrors.forEach(function(error) {                                   
+                           let transformedObject = {};
+                           transformedObject[error.field.charAt(0).toLowerCase() + error.field.slice(1)] = error.error;
+                           transformedObjects.push(transformedObject);
+                       });
+                              
+                    $('.errorFieldText').each(function() {
+                        let errorField = $(this).data('errorfield');
+                        
+                        switch (errorField) {
+                            case 'requestTypeId':                        
+                                checkIfPropertyExistsThenGetValue(transformedObjects, 'requestTypeId', function(errorRequestTypeId) {                            
+                                    if (errorRequestTypeId !== null){
+                                        $(this).text(errorRequestTypeId);
+                                    }                             
+                                }.bind(this)); 
+                                break;
+                            case 'departmentId':
+                                checkIfPropertyExistsThenGetValue(transformedObjects, 'departmentId', function(errorDepartmentId) {
+                                  if (errorDepartmentId !== null){
+                                      $(this).text(errorDepartmentId);
+                                  }
+                                }.bind(this));
+                                break;
+                            case 'content':
+                                checkIfPropertyExistsThenGetValue(transformedObjects, 'content', function(errorContent) {
+                                     if (errorContent !== null){
+                                          $(this).text(errorContent);
+                                      }
+                                }.bind(this));
+                                break;
+                            case 'title':
+                                checkIfPropertyExistsThenGetValue(transformedObjects, 'title', function(errorTitle) {
+                                    if (errorTitle !== null){
+                                     $(this).text(errorTitle);
+                                    }
+                                }.bind(this));
+                                break;
+                            default:                         
+                                break;
+                        }
+                            });
+                                      pushNotify('New Document', 'Failed to create document', 'error');
+                                          
+                                    }
+                                  });
+                             }                 
+                             errors = [];
+                           });        
+                    
+                    });
          
         $('.custom-buttons').appendTo('.dataTables_wrapper .dataTables_filter:eq(0)');
              

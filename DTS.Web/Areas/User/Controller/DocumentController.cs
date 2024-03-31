@@ -68,14 +68,24 @@ public class DocumentController : Controller
         document.ModifiedDate = DateTime.Now;
         document.CreatedBy = 3;
         document.ModifiedBy = 3;
+
+        if (documentVm.DepartmentId is null)
+        {
+            ModelState.AddModelError("DepartmentId", "Department is required");
+        }
+        
+        if (documentVm.RequestTypeId is null)
+        {
+            ModelState.AddModelError("RequestTypeId", "RequestType is required");
+        }
         
         if (ModelState.IsValid)
         {
             document.Title = documentVm.Title;
             document.Content = documentVm.Content;
             document.TrackingCode = documentVm.TrackingCode;
-            document.DepartmentId = documentVm.DepartmentId;
-            document.RequestTypeId = documentVm.RequestTypeId;
+            document.DepartmentId = documentVm.DepartmentId.Value;
+            document.RequestTypeId = documentVm.RequestTypeId.Value;
             document.Remarks = documentVm.Remarks;
             
             await _dbContext.Documents.AddAsync(document);
@@ -95,7 +105,7 @@ public class DocumentController : Controller
                 })
                 .Where(item => item.Error != null)
                 .ToList();
-            
+              
             var dataJson = new { isSuccess = false, errors = errors };
             return BadRequest(dataJson);
         }

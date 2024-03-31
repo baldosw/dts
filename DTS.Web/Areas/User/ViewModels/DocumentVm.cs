@@ -28,14 +28,14 @@ public class DocumentVm
     
     [ValidateNever]
     public string RequestType { get; set; }
-    [Required]
-    public int RequestTypeId { get; set; }
+   
+    public int? RequestTypeId { get; set; }
 
     [ValidateNever]
     public string  Department { get; set; }
 
-    [Required]
-    public int DepartmentId { get; set; }
+     
+    public int? DepartmentId { get; set; }
 
     public string Remarks { get; set; }
 
