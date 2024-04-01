@@ -101,41 +101,42 @@
       </div>
       <div class="modal-body">
           <form>
+               <input type="text" class="id form-control" id="updateId"   >
               <label for="message-text" class="col-form-label">Tracking Code:</label>
-              <strong id = 'updateTrackingCode'></strong>
+              <strong id='updateTrackingCode'></strong>
               <div class="form-group">
                   <label for="message-text" class="col-form-label">Department:</label>
-                  <select id="updateDepartmentId" asp-for="@Model.DepartmentId" asp-items="@Model.Departments" class="form-select" style="font-size: 12px !important;">
+                  <select id="updateDepartmentId" asp-for="@Model.DepartmentId" asp-items="@Model.Departments" class="departmentId form-select" style="font-size: 12px !important;">
                       <option value="">----Select Department----</option>
                   </select>
-                  <p class="errorFieldText" id = 'errorFieldDepartmentId' data-errorfield = "departmentId"></p>
+                  <p class="errorFieldText" id='errorFieldDepartmentId' data-errorfield="departmentId"></p>
               </div>
               <div class="form-group">
                   <label for="recipient-name" class="col-form-label">Title:</label>
-                  <input type="text" class="form-control" id="updateTitle"   >
-                  <p class="errorFieldText" id = 'errorFieldTitle' data-errorfield = "title"></p>
+                  <input type="text" class="title form-control" id="updateTitle">
+                  <p class="errorFieldText" id='errorFieldTitle' data-errorfield="title"></p>
               </div>
               <div class="form-group">
                   <label for="message-text" class="col-form-label">Content:</label>
-                  <textarea cols="30" rows="2" class="form-control" style="height: 50px;" id = "updateContent"  ></textarea>
-                   <p class="errorFieldText" id = 'errorFieldContent' data-errorfield = "content"></p>
+                  <textarea cols="30" rows="2" class="content form-control" style="height: 50px;" id = "updateContent"  ></textarea>
+                  <p class="errorFieldText" id='errorFieldContent' data-errorfield="content"></p>
               </div>
               <div class="form-group">
                   <label for="message-text" class="col-form-label">Request Type:</label>
-                  <select asp-for="@Model.RequestTypeId" asp-items="@Model.RequestTypes" class="form-select" style="font-size: 12px !important;" id="updateRequestTypeId" >
+                  <select asp-for="@Model.RequestTypeId" asp-items="@Model.RequestTypes" class="requestTypeId form-select" style="font-size: 12px !important;" id="updateRequestTypeId">
                       <option value="">----Select Request Type----</option>
                   </select>
-                    <p class="errorFieldText" id = 'errorFieldRequestTypeId' data-errorfield = "requestTypeId"></p>
+                  <p class="errorFieldText" id='errorFieldRequestTypeId' data-errorfield="requestTypeId"></p>
               </div>
               <div class="form-group">
                   <label for="message-text" class="col-form-label">Remarks:</label>
-                  <textarea cols="30" rows="2" class="form-control" style="height: 50px;" id ="updateRemarks"></textarea>
+                  <textarea cols="30" rows="2" class="remarks form-control" style="height: 50px;" id ="updateRemarks"></textarea>
               </div>
           </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" id = "closeModal">Close</button>
-        <button type="button" class="btn btn-primary" id = 'btnSaveChangesDocument'>Save Changes</button>
+        <button type="button" class="btn btn-primary" id = 'btnUpdateSaveChangesDocument'>Save Changes</button>
       </div>
     </div>
   </div>
@@ -181,108 +182,147 @@
             });         
             callback(null);
         }
-          
-        $('#btnSaveChangesDocument').on('click', function (e){                   
-            let departmentId = parseInt($('#departmentId').val());
-             let requestTypeId = parseInt($('#requestTypeId').val());
-             let title =  $('#title').val();
-             let content =  $('#content').val();
-             let remarks =  $('#remarks').val();
-              
-             let validateTitle = validateInput('Title', title, 2, 50);
-             let validateContent = validateInput('Content', content, 2, 400);
-             let validateDepartment = validateSelect('Department', departmentId);
-             let validateRequestTypeid = validateSelect('Request Type', requestTypeId);
-             
-             $('.errorFieldText').text('')
-             
-             displayValidationError('#errorFieldTitle', validateTitle)
-             displayValidationError('#errorFieldContent', validateContent)
-             displayValidationError('#errorFieldDepartmentId', validateDepartment)
-             displayValidationError('#errorFieldRequestTypeId', validateRequestTypeid)
-              
-             if (errors.length < 1){
-                 console.log('insert data')
-                 $.ajax({
-                      url: '/user/document/createDocument',
-                      type: 'POST',
-                      contentType: 'application/json', 
-                      data: JSON.stringify({
-                          departmentId,
-                          requestTypeId,
-                          title,
-                          content,
-                          remarks,
-                          trackingCode
-                      }),
-                      success: function(response) {                                  
-                         $('#title').val('');
-                         $('#content').val('');
-                         $('#remarks').val('');
-                         $('#departmentId').prop('selectedIndex', 0);
-                         $('#requestTypeId').prop('selectedIndex', 0);
-                         
-                         $('#closeModal').click();
-                          
-                         refreshDatatable();
-                          
-                         pushNotify('New Document', 'Successfully created document', 'success');                               
-                      },
-                      error: function(xhr, status, error) {                           
-                      let serverErrors = xhr.responseJSON.errors;
-                      let transformedObjects = [];
-                       
-                       serverErrors.forEach(function(error) {                                   
-                           let transformedObject = {};
-                           transformedObject[error.field.charAt(0).toLowerCase() + error.field.slice(1)] = error.error;
-                           transformedObjects.push(transformedObject);
-                       });
-                              
-                    $('.errorFieldText').each(function() {
-                        let errorField = $(this).data('errorfield');
+        
+        function saveChanges(inputObject, requestMethod, url, titleChanges, message){
+           
+                
+                          let validateTitle = validateInput('Title', inputObject.title, 2, 50);
+                          let validateContent = validateInput('Content', inputObject.content, 2, 400);
+                          let validateDepartment = validateSelect('Department', inputObject.departmentId);
+                          let validateRequestTypeid = validateSelect('Request Type', inputObject.requestTypeId);
                         
-                        switch (errorField) {
-                            case 'requestTypeId':                        
-                                checkIfPropertyExistsThenGetValue(transformedObjects, 'requestTypeId', function(errorRequestTypeId) {                            
-                                    if (errorRequestTypeId !== null){
-                                        $(this).text(errorRequestTypeId);
-                                    }                             
-                                }.bind(this)); 
-                                break;
-                            case 'departmentId':
-                                checkIfPropertyExistsThenGetValue(transformedObjects, 'departmentId', function(errorDepartmentId) {
-                                  if (errorDepartmentId !== null){
-                                      $(this).text(errorDepartmentId);
-                                  }
-                                }.bind(this));
-                                break;
-                            case 'content':
-                                checkIfPropertyExistsThenGetValue(transformedObjects, 'content', function(errorContent) {
-                                     if (errorContent !== null){
-                                          $(this).text(errorContent);
-                                      }
-                                }.bind(this));
-                                break;
-                            case 'title':
-                                checkIfPropertyExistsThenGetValue(transformedObjects, 'title', function(errorTitle) {
-                                    if (errorTitle !== null){
-                                     $(this).text(errorTitle);
-                                    }
-                                }.bind(this));
-                                break;
-                            default:                         
-                                break;
-                        }
+                          
+                          $('.errorFieldText').text('')
+                          
+                          displayValidationError('#errorFieldTitle', validateTitle)
+                          displayValidationError('#errorFieldContent', validateContent)
+                          displayValidationError('#errorFieldDepartmentId', validateDepartment)
+                          displayValidationError('#errorFieldRequestTypeId', validateRequestTypeid)
+                           
+                        
+                          if (errors.length < 1){                  
+                              $.ajax({
+                                   url: url,
+                                   type: requestMethod,
+                                   contentType: 'application/json', 
+                                   data: JSON.stringify(inputObject),
+                                   success: function(response) {                                  
+                                      $('#title').val('');
+                                      $('#content').val('');
+                                      $('#remarks').val('');
+                                      $('#departmentId').prop('selectedIndex', 0);
+                                      $('#requestTypeId').prop('selectedIndex', 0);
+                                      
+                                      $('#closeModal').click();
+                                       
+                                      refreshDatatable();
+                                       
+                                      pushNotify('New Document', message, 'success');                               
+                                   },
+                                   error: function(xhr, status, error) {                           
+                                   let serverErrors = xhr.responseJSON.errors;
+                                   console.log(xhr)
+                                   let transformedObjects = [];
+                                    
+                                    serverErrors.forEach(function(error) {                                   
+                                        let transformedObject = {};
+                                        transformedObject[error.field.charAt(0).toLowerCase() + error.field.slice(1)] = error.error;
+                                        transformedObjects.push(transformedObject);
+                                    });
+                                           
+                                 $('.errorFieldText').each(function() {
+                                     let errorField = $(this).data('errorfield');
+                                     
+                                     switch (errorField) {
+                                         case 'requestTypeId':                        
+                                             checkIfPropertyExistsThenGetValue(transformedObjects, 'requestTypeId', function(errorRequestTypeId) {                            
+                                                 if (errorRequestTypeId !== null){
+                                                     $(this).text(errorRequestTypeId);
+                                                 }                             
+                                             }.bind(this)); 
+                                             break;
+                                         case 'departmentId':
+                                             checkIfPropertyExistsThenGetValue(transformedObjects, 'departmentId', function(errorDepartmentId) {
+                                               if (errorDepartmentId !== null){
+                                                   $(this).text(errorDepartmentId);
+                                               }
+                                             }.bind(this));
+                                             break;
+                                         case 'content':
+                                             checkIfPropertyExistsThenGetValue(transformedObjects, 'content', function(errorContent) {
+                                                  if (errorContent !== null){
+                                                       $(this).text(errorContent);
+                                                   }
+                                             }.bind(this));
+                                             break;
+                                         case 'title':
+                                             checkIfPropertyExistsThenGetValue(transformedObjects, 'title', function(errorTitle) {
+                                                 if (errorTitle !== null){
+                                                  $(this).text(errorTitle);
+                                                 }
+                                             }.bind(this));
+                                             break;
+                                         default:                         
+                                             break;
+                                     }
+                                         });
+                                                   pushNotify(titleChanges, 'Failed to create document', 'error');
+                                                       
+                                                 }
+                                               });
+                                          }                 
+                                          errors = [];                                 
+        }
+        
+        $('#btnSaveChangesDocument').on('click', function (e){                   
+                                 let departmentId = parseInt($('#departmentId').val());
+                                                          let requestTypeId = parseInt($('#requestTypeId').val());
+                                                          let title =  $('#title').val();
+                                                          let content =  $('#content').val();
+                                                          let remarks =  $('#remarks').val();
+                                                          
+                                  
+                           let data = {
+                                   departmentId,
+                                   requestTypeId,
+                                   title,
+                                   content,
+                                   remarks,
+                                   trackingCode
+                                    
+                               }                          
+                                                          
+                               saveChanges(data, 'post', '/user/document/createDocument', 'New Document',  'Successfully created document');
                             });
-                                      pushNotify('New Document', 'Failed to create document', 'error');
-                                          
-                                    }
-                                  });
-                             }                 
-                             errors = [];
-                           });        
-                    
-                    });
+         
+          $('#btnUpdateSaveChangesDocument').on('click', function (e){         
+              
+              console.log('update');
+    
+                                          let documentId = parseInt($('#updateId').val());
+                                           let departmentId = parseInt($('#updateDepartmentId').val());
+                                        let requestTypeId = parseInt($('#updateRequestTypeId').val());
+                                        let title =  $('#updateTitle').val();
+                                        let content =  $('#updateContent').val();
+                                        let remarks =  $('#updateRemarks').val();
+                                         let trackingCode =  $('#updateTrackingCode').text();
+                                           let data = {
+                                                                             departmentId,
+                                                                             requestTypeId,
+                                                                             title,
+                                                                             content,
+                                                                             remarks,
+                                                                             trackingCode,
+                                                                             id : documentId
+                                                                              
+                                                                         }       
+                                                                         
+                                                                         console.log(data)
+                                        saveChanges(data,'put', '/user/document/UpdateDocument',  'Update Document', 'Successfully updated document');
+                                     });
+        
+            });   
+        
          
         $('.custom-buttons').appendTo('.dataTables_wrapper .dataTables_filter:eq(0)');
              

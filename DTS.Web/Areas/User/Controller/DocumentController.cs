@@ -110,56 +110,125 @@ public class DocumentController : Controller
     [HttpPost]
     public async Task<IActionResult>  CreateDocument([FromBody]DocumentVm documentVm)
     {
-        Document document = new Document();
-        document.CreatedDate = DateTime.Now;
-        document.ModifiedDate = DateTime.Now;
-        document.CreatedBy = 3;
-        document.ModifiedBy = 3;
+        try
+        {
+            Document document = new Document();
+            document.CreatedDate = DateTime.Now;
+            document.ModifiedDate = DateTime.Now;
+            document.CreatedBy = 3;
+            document.ModifiedBy = 3;
 
-        if (documentVm.DepartmentId is null)
-        {
-            ModelState.AddModelError("DepartmentId", "Department is required");
-        }
+            if (documentVm.DepartmentId is null)
+            {
+                ModelState.AddModelError("DepartmentId", "Department is required");
+            }
         
-        if (documentVm.RequestTypeId is null)
-        {
-            ModelState.AddModelError("RequestTypeId", "RequestType is required");
-        }
+            if (documentVm.RequestTypeId is null)
+            {
+                ModelState.AddModelError("RequestTypeId", "RequestType is required");
+            }
         
-        if (ModelState.IsValid)
-        {
-            document.Title = documentVm.Title;
-            document.Content = documentVm.Content;
-            document.TrackingCode = documentVm.TrackingCode;
-            document.DepartmentId = documentVm.DepartmentId.Value;
-            document.RequestTypeId = documentVm.RequestTypeId.Value;
-            document.Remarks = documentVm.Remarks;
+            if (ModelState.IsValid)
+            {
+                document.Title = documentVm.Title;
+                document.Content = documentVm.Content;
+                document.TrackingCode = documentVm.TrackingCode;
+                document.DepartmentId = documentVm.DepartmentId.Value;
+                document.RequestTypeId = documentVm.RequestTypeId.Value;
+                document.Remarks = documentVm.Remarks;
             
-            await _dbContext.Documents.AddAsync(document);
-            await _dbContext.SaveChangesAsync();
+                await _dbContext.Documents.AddAsync(document);
+                await _dbContext.SaveChangesAsync();
 
-            var dataJson = new { isSuccess = true };
+                var dataJson = new { isSuccess = true };
             
-            return Ok(dataJson);
-        }
-        else
-        {
-            var errors = ModelState.Keys
-                .Select(key => new
-                {
-                    Field = key,
-                    Error = ModelState[key].Errors.FirstOrDefault()?.ErrorMessage
-                })
-                .Where(item => item.Error != null)
-                .ToList();
+                return Ok(dataJson);
+            }
+            else
+            {
+                var errors = ModelState.Keys
+                    .Select(key => new
+                    {
+                        Field = key,
+                        Error = ModelState[key].Errors.FirstOrDefault()?.ErrorMessage
+                    })
+                    .Where(item => item.Error != null)
+                    .ToList();
               
-            var dataJson = new { isSuccess = false, errors = errors };
+                var dataJson = new { isSuccess = false, errors = errors };
+                return BadRequest(dataJson);
+            }
+        }
+        catch (Exception e)
+        {
+            var dataJson = new { isSuccess = false, errors = e.Message };
             return BadRequest(dataJson);
         }
- 
+       
     }
 
-    
+    [HttpPut]
+    public async Task<IActionResult> UpdateDocument([FromBody] DocumentVm documentVm)
+    {
+        try
+        {
+            Document document = await _dbContext.Documents.Where(doc => doc.Id == documentVm.Id).FirstOrDefaultAsync();
+            document.ModifiedDate = DateTime.Now;
+            document.CreatedBy = 3;
+            document.ModifiedBy = 3;
+
+            if (documentVm.DepartmentId is null)
+            {
+                ModelState.AddModelError("DepartmentId", "Department is required");
+            }
+        
+            if (documentVm.RequestTypeId is null)
+            {
+                ModelState.AddModelError("RequestTypeId", "RequestType is required");
+            }
+        
+            if (ModelState.IsValid)
+            {
+                document.Title = documentVm.Title;
+                document.Content = documentVm.Content;
+                document.TrackingCode = documentVm.TrackingCode;
+                document.DepartmentId = documentVm.DepartmentId.Value;
+                document.RequestTypeId = documentVm.RequestTypeId.Value;
+                document.Remarks = documentVm.Remarks;
+            
+                await _dbContext.Documents.AddAsync(document);
+                await _dbContext.SaveChangesAsync();
+
+                var dataJson = new { isSuccess = true };
+            
+                return Ok(dataJson);
+            }
+            else
+            {
+                var errors = ModelState.Keys
+                    .Select(key => new
+                    {
+                        Field = key,
+                        Error = ModelState[key].Errors.FirstOrDefault()?.ErrorMessage
+                    })
+                    .Where(item => item.Error != null)
+                    .ToList();
+              
+                var dataJson = new { isSuccess = false, errors = errors };
+                return BadRequest(dataJson);
+            }
+        }
+        catch (Exception e)
+        {
+            var dataJson = new { isSuccess = false, errors = e.Message };
+            return BadRequest(e.Message);
+        }
+        
+        
+
+    }
+
+
     #endregion
     
 }

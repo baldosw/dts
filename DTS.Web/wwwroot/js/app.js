@@ -235,8 +235,8 @@ function loadDocumentFromDatabase(urlFromClient){
                     $('#updateRemarks').val(response.data.remarks);
                     $('#updateDepartmentId').val(response.data.departmentId);
                     $('#updateRequestTypeId').val(response.data.requestTypeId);
-                    $('#updateTrackingCode').text(response.data.trackingCode)
-                    
+                    $('#updateTrackingCode').text(response.data.trackingCode);
+                    $('#updateId').val(response.data.id);
                     $('#modalUpdateDocument').modal('show');
                 } else {
                     console.error('Title not found in the response.');
