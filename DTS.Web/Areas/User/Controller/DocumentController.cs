@@ -196,7 +196,7 @@ public class DocumentController : Controller
                 document.RequestTypeId = documentVm.RequestTypeId.Value;
                 document.Remarks = documentVm.Remarks;
             
-                await _dbContext.Documents.AddAsync(document);
+                _dbContext.Documents.Update(document);
                 await _dbContext.SaveChangesAsync();
 
                 var dataJson = new { isSuccess = true };

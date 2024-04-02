@@ -101,7 +101,7 @@
       </div>
       <div class="modal-body">
           <form>
-               <input type="text" class="id form-control" id="updateId"   >
+               <input type="hidden" class="id form-control" id="updateId"   >
               <label for="message-text" class="col-form-label">Tracking Code:</label>
               <strong id='updateTrackingCode'></strong>
               <div class="form-group">
@@ -109,24 +109,24 @@
                   <select id="updateDepartmentId" asp-for="@Model.DepartmentId" asp-items="@Model.Departments" class="departmentId form-select" style="font-size: 12px !important;">
                       <option value="">----Select Department----</option>
                   </select>
-                  <p class="errorFieldText" id='errorFieldDepartmentId' data-errorfield="departmentId"></p>
+                  <p class="errorFieldText" id='errorUpdateFieldDepartmentId' data-errorfield="departmentId"></p>
               </div>
               <div class="form-group">
                   <label for="recipient-name" class="col-form-label">Title:</label>
                   <input type="text" class="title form-control" id="updateTitle">
-                  <p class="errorFieldText" id='errorFieldTitle' data-errorfield="title"></p>
+                  <p class="errorFieldText" id='errorUpdateFieldTitle' data-errorfield="title"></p>
               </div>
               <div class="form-group">
                   <label for="message-text" class="col-form-label">Content:</label>
                   <textarea cols="30" rows="2" class="content form-control" style="height: 50px;" id = "updateContent"  ></textarea>
-                  <p class="errorFieldText" id='errorFieldContent' data-errorfield="content"></p>
+                  <p class="errorFieldText" id='errorUpdateFieldContent' data-errorfield="content"></p>
               </div>
               <div class="form-group">
                   <label for="message-text" class="col-form-label">Request Type:</label>
                   <select asp-for="@Model.RequestTypeId" asp-items="@Model.RequestTypes" class="requestTypeId form-select" style="font-size: 12px !important;" id="updateRequestTypeId">
                       <option value="">----Select Request Type----</option>
                   </select>
-                  <p class="errorFieldText" id='errorFieldRequestTypeId' data-errorfield="requestTypeId"></p>
+                  <p class="errorFieldText" id='errorUpdateFieldRequestTypeId' data-errorfield="requestTypeId"></p>
               </div>
               <div class="form-group">
                   <label for="message-text" class="col-form-label">Remarks:</label>
@@ -162,8 +162,9 @@
             
          function refreshDatatable(){
              dataTable.destroy();
-             loadDataTable(documentColumns)
              dataTable.ajax.reload();
+             loadDataTable(documentColumns)
+                $('.custom-buttons').appendTo('.dataTables_wrapper .dataTables_filter:eq(0)');
          }
          
         function displayValidationError(errorField, errorMessage){     
@@ -198,6 +199,11 @@
                           displayValidationError('#errorFieldContent', validateContent)
                           displayValidationError('#errorFieldDepartmentId', validateDepartment)
                           displayValidationError('#errorFieldRequestTypeId', validateRequestTypeid)
+                          
+                           displayValidationError('#errorUpdateFieldTitle', validateTitle)
+                            displayValidationError('#errorUpdateFieldContent', validateContent)
+                            displayValidationError('#errorUpdateFieldDepartmentId', validateDepartment)
+                            displayValidationError('#errorUpdateFieldRequestTypeId', validateRequestTypeid)
                            
                         
                           if (errors.length < 1){                  
@@ -297,7 +303,6 @@
          
           $('#btnUpdateSaveChangesDocument').on('click', function (e){         
               
-              console.log('update');
     
                                           let documentId = parseInt($('#updateId').val());
                                            let departmentId = parseInt($('#updateDepartmentId').val());

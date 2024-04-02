@@ -406,7 +406,7 @@ function OnClickLoadStudentProfile(url, entity) {
 }
  
 
-//------------------- Get All Students -------------------------------------
+//------------------- Get All Documents -------------------------------------
 
 
 var documentColumns = {
