@@ -95,7 +95,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="modalUpdateDocumentLabel">Update Document</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id = "updateCloseModalIcon">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -135,7 +135,7 @@
           </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" id = "closeModal">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id = "updateCloseModalButton">Close</button>
         <button type="button" class="btn btn-primary" id = 'btnUpdateSaveChangesDocument'>Save Changes</button>
       </div>
     </div>
@@ -161,10 +161,26 @@
         $(document).ready(function() {   
             
          function refreshDatatable(){
+             
+             let customButtons = `
+                <div class="custom-buttons">
+                           <button class="btn btn-primary" data-toggle="modal" data-target="#modalNewDocument" id = "btnNewDocument">
+                               <i class="bi bi-file-earmark-plus"></i>
+                               New Document
+                           </button>
+                           <button class="btn btn-success" id = "btnRefreshDataTable">
+                               <i class="bi bi-arrow-repeat"></i>
+                               Refresh
+                           </button>
+                       </div>
+             
+             `
+             
              dataTable.destroy();
              dataTable.ajax.reload();
              loadDataTable(documentColumns)
-                $('.custom-buttons').appendTo('.dataTables_wrapper .dataTables_filter:eq(0)');
+            
+             document.querySelector('.dataTables_wrapper .dataTables_filter').insertAdjacentHTML('beforeend', customButtons)
          }
          
         function displayValidationError(errorField, errorMessage){     
@@ -183,6 +199,8 @@
             });         
             callback(null);
         }
+        
+        
         
         function saveChanges(inputObject, requestMethod, url, titleChanges, message){
            
@@ -220,6 +238,7 @@
                                       $('#requestTypeId').prop('selectedIndex', 0);
                                       
                                       $('#closeModal').click();
+                                      $('#modalUpdateDocument').modal('hide');
                                        
                                       refreshDatatable();
                                        
@@ -280,12 +299,16 @@
                                           errors = [];                                 
         }
         
+          $('#updateCloseModalIcon, #updateCloseModalButton').click(function() {
+                $('#modalUpdateDocument').modal('hide');
+            });
+        
         $('#btnSaveChangesDocument').on('click', function (e){                   
                                  let departmentId = parseInt($('#departmentId').val());
-                                                          let requestTypeId = parseInt($('#requestTypeId').val());
-                                                          let title =  $('#title').val();
-                                                          let content =  $('#content').val();
-                                                          let remarks =  $('#remarks').val();
+                                  let requestTypeId = parseInt($('#requestTypeId').val());
+                                  let title =  $('#title').val();
+                                  let content =  $('#content').val();
+                                  let remarks =  $('#remarks').val();
                                                           
                                   
                            let data = {

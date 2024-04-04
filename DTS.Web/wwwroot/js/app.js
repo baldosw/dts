@@ -449,7 +449,7 @@ var documentColumns = {
             'checkboxes': {
                 'selectRow': true
             }
-        }
+        } 
     ],
     'select': {
         'style': 'multi'
