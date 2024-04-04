@@ -1528,6 +1528,11 @@ textarea{
   top: 70px;
 }
 
+.dataTables td {
+  white-space: nowrap;
+  width: auto;
+}
+
 .errorFieldText{
   font-size: 10px !important;
   color: #a83240 !important;
@@ -1543,4 +1548,6 @@ textarea{
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 50px !important;  
-}  
+}
+
+ 

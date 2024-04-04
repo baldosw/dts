@@ -8,6 +8,21 @@ var dataTable;
 //     toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
 // });
 
+var qrCodeDiv = document.getElementById('qrcode');
+
+ 
+var qrCode = new QRCode(qrCodeDiv, {
+    text: '',  
+    width: 128,
+    height: 128
+});
+
+function updateQRCode(content) {
+    qrCode.clear();  
+    qrCode.makeCode(content);  
+}
+
+
 var idioma =
 {
     "sProcessing": "Processing...",
@@ -249,6 +264,44 @@ function loadDocumentFromDatabase(urlFromClient){
         });
     });
 }
+
+function loadPrintDocument(urlFromClient){
+
+    $('#printDocumentTrackingCode').text('');
+    $('#printDocumentDepartmentName').text('');
+    $('#printDocumentTitle').text('');
+    $('#printDocumentContent').text('');
+    $('#printDocumentRequestTypeTitle').text('');
+    $('#printDocumentRemarks').text('');
+
+    $.ajax({
+        url: urlFromClient,
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) {
+            if (response && response.data && response.data.title) {
+                $('#printDocumentTrackingCode').text(response.data.trackingCode);
+                $('#printDocumentDepartmentName').text(response.data.departmentName);
+                $('#printDocumentTitle').text(response.data.title);
+                $('#printDocumentContent').text(response.data.content);
+                $('#printDocumentRequestTypeTitle').text(response.data.requestTypeTitle);
+                $('#printDocumentRemarks').text(response.data.remarks);
+                
+                updateQRCode(response.data.trackingCode)
+                 
+                $('#modalPrintDocument').modal('show');
+            } else {
+                console.error('Title not found in the response.');
+            }
+        },
+        error: function(xhr, status, error) {
+
+            console.error(xhr.responseText);
+        }
+    });
+    
+   
+}
  
 function OnClickLoadStudentProfile(url, entity) {
     $.ajax({
@@ -433,7 +486,7 @@ var documentColumns = {
                                 <a class="dropdown-item" href="#" onclick='loadDocumentFromDatabase("/user/document/getdocument/${data}")' style = "font-size: 12px !important;"   id = "btnUpdateDocumentModal" >
                                 <i class="bi bi-pencil-square" ></i>
                                 Update</a>
-                                <a class="dropdown-item" href="#" style = "font-size: 12px !important;">
+                                <a class="dropdown-item" href="#" style = "font-size: 12px !important;" onclick='loadPrintDocument("/user/document/getdocument/${data}")'>
                                    <i class="bi bi-printer"></i>
                                     Print
                                 </a>                          
@@ -449,7 +502,11 @@ var documentColumns = {
             'checkboxes': {
                 'selectRow': true
             }
-        } 
+        },         
+        {
+            width: "600px",
+            targets: 4
+        },
     ],
     'select': {
         'style': 'multi'

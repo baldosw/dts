@@ -46,5 +46,9 @@ public class DocumentVm
     public long CreatedTimestamp { get; set; }
 
     public int DocumentId { get; set; }
+
+    public string DepartmentName { get; set; }
+
+    public string RequestTypeTitle { get; set; }
  
 }

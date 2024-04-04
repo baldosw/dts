@@ -100,6 +100,8 @@ public class DocumentController : Controller
                 Department = department.Name,
                 RequestTypeId = requestType.Id,
                 DepartmentId = department.Id,
+                DepartmentName = department.Name,
+                RequestTypeTitle = requestType.Title,
                 CreatedTimestamp = (long)(document.CreatedDate - new DateTime(1970, 1, 1)).TotalSeconds
             }).SingleOrDefaultAsync();
         
